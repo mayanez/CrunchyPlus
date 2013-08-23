@@ -1,5 +1,12 @@
 #Developer Notes#
 
+##Dependencies##
+* fermata (https://github.com/natevw/fermata)
+* jsdom (https://github.com/tmpvar/jsdom) For testing
+
+##TODOs##
+*Write Mock of a CrunchyRoll page to test adding the ratings table.
+
 ##API's##
 
 ###MyAnimeList###
