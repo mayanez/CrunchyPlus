@@ -1,0 +1,29 @@
+{
+  "name": "CrunchyPlus",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "This extension was created with the awesome extensionizr.io",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": [
+    "tabs",
+    "https://www.crunchyroll.com/*",
+    "http://www.crunchyroll.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.crunchyroll.com/*",
+        "http://www.crunchyroll.com/*"
+      ],
+      "js": [
+        "js/jquery/jquery.js",
+        "js/fermata.js",
+        "src/malClient.js"
+      ]
+    }
+  ]
+}

@@ -1,11 +1,6 @@
-//Will change once I move over to testing on browser.
-var fermata = require('fermata');
-
-//For testing in node.js. Will remove when transitioning to browser
-var jsdom = require('jsdom').jsdom;
 
 
-var mal_base = fermata.json("http://mal-api.com/")
+var mal_base = window.fermata.json("http://mal-api.com/")
 var mal_anime = mal_base('anime');
 
 /*
@@ -19,10 +14,6 @@ function extractRating(anime_json) {
  * Creates a ratings table to add to crunchyroll.
  */
 function createRatingsTable(rating) {
-
-	//for Testing purposes. This will go away once it is run in a browser.
-	var window = jsdom().parentWindow;
-	var document = window.document;
 
 	//Abstract all of this creating elements to separate helper functions.
 	var div = document.createElement("div");
@@ -50,20 +41,38 @@ function createRatingsTable(rating) {
 	return div;
 }
 
+function placeTable(table) {
+
+	$('#container').prepend(table);
+	console.log("Appended");
+}
+
 function searchHandler(err, result) {
 	var rating = extractRating(result[0]);
-	createRatingsTable(rating);
+	var table = createRatingsTable(rating);
+	placeTable(table);
 }
 
 
 function searchMAL(title) {
+	console.log("searching...");
 	mal_anime('search')({q: title}).get(searchHandler);
 }
 
-searchMAL("Bleach");
 
 
+chrome.extension.sendMessage({}, function(response) {
+	var readyStateCheckInterval = setInterval(function() {
+	if (document.readyState === "complete") {
+		clearInterval(readyStateCheckInterval);
 
-
-
-
+		// ----------------------------------------------------------
+		// This part of the script triggers when page is done loading
+		console.log("Hello. This message was sent from scripts/inject.js");
+		// ----------------------------------------------------------
+		var title = $("html body.main-page div#template_scroller.ad-skin div#template_container.cf div#template_body.cf div#source_showview div#container.cf h1.ellipsis span").text();
+		console.log(title);
+		searchMAL(title);
+	}
+	}, 10);
+});
